@@ -12,9 +12,9 @@ export const checkAuth =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-      // const accessToken = req.cookies.accessToken || req.headers.authorization;
+      const accessToken = req.cookies.accessToken || req.headers.authorization;
 
-      const accessToken = req.headers.authorization || req.cookies.authorization ;
+      // const accessToken = req.headers.authorization || req.cookies.authorization ;
 
 
       // if (!accessToken) {

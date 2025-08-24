@@ -60,7 +60,10 @@ const getAllUsers = async (query: Record<string, string>) => {
   };
 };
 
-
+const getAllDeliveryMen = async (): Promise<IUser[]> => {
+  const deliveryMen = await User.find({ role: 'DeliveryMan', status: 'active' }).select('name email');
+  return deliveryMen;
+};
 
 // get me
 const userProfile = async (userId: string) => {
@@ -157,6 +160,7 @@ export const UserServices = {
   createUser,
   getAllUsers,
   getSingleUser,
+  getAllDeliveryMen,
   updateUser,
   userProfile,
   toggleBlockStatus,

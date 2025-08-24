@@ -3,6 +3,7 @@ import { Server } from "http";
 import { envVars } from "./app/config/env";
 import app from "./app";
 import { sendSuperAdmin } from "./app/utils/sendSuperAdmin";
+import { connectRedis } from "./app/config/redis.config";
 
 let server: Server;
 
@@ -23,6 +24,7 @@ const startServer = async () => {
 (async () => {
   await startServer()
   await sendSuperAdmin()
+  await connectRedis()
 })();
 
 process.on("SIGTERM", () => {

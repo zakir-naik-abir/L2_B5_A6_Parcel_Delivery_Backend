@@ -10,7 +10,9 @@ const router = Router();
 
 router.post('/register', validateRequest(createUserZodSchema), UserControllers.createUser);
 
-router.get('/all-users', checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN), UserControllers.getAllUsers);
+router.get('/', checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN), UserControllers.getAllUsers);
+
+router.get('/deliveryMen', checkAuth(...Object.values(UserRole)), UserControllers.getAllDeliveryMen);
 
 router.get('/me', checkAuth(...Object.values(UserRole)), UserControllers.userProfile);
 
@@ -18,7 +20,7 @@ router.get('/:id', checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN), UserControll
 
 router.patch('/:id', validateRequest(updateZodSchema), checkAuth(...Object.values(UserRole)), UserControllers.updateUser);
 
-router.patch('/block/:id', checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN), UserControllers.blockUser);
+router.patch('/block', checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN), UserControllers.blockUser);
 
 router.patch('/unblock/:id', checkAuth(UserRole.ADMIN, UserRole.SUPER_ADMIN), UserControllers.unblockUser);
 

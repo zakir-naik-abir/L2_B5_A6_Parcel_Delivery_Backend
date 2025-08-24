@@ -2,10 +2,9 @@ import { Router } from "express";
 import { ParcelController } from "./parcel.controller";
 import { checkAuth } from "../../middleware/checkAuth";
 import { UserRole } from "../user/user.interface";
-// import { authCheck } from "../../middleware/authCheck";
-// import { IUserRole } from "../user/user.interface";
-// import { validateRequest } from "../../middleware/validateRequest";
-// import { updateZodSchema } from "../user/user.validation";
+import { validateRequest } from "../../middleware/validateRequest";
+import { parcelValidationSchema } from "./parcel.validation";
+
 
 const router = Router();
 
@@ -14,7 +13,7 @@ const router = Router();
 router.post(
   '/create',
   checkAuth(...Object.values(UserRole)),
-  // validateRequest(createParcelValidationSchema),
+  validateRequest(parcelValidationSchema),
   ParcelController.createParcel
 );
 
@@ -22,7 +21,7 @@ router.get('/my-parcels', checkAuth(...Object.values(UserRole)), ParcelControlle
 
 router.get('/my-parcels', checkAuth(...Object.values(UserRole)), ParcelController.getMyParcels);
 
-router.get('/all-parcel', checkAuth(UserRole.ADMIN), ParcelController.getAllParcelsForAdmin)
+router.get('/', checkAuth(UserRole.SUPER_ADMIN, UserRole.ADMIN), ParcelController.getAllParcelsForAdmin)
 
 router.patch('/cancel/:parcelId', checkAuth(...Object.values(UserRole)), ParcelController.cancelParcel);
 

@@ -33,6 +33,15 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) =>{
   })
 });
 
+const getAllDeliveryMen = catchAsync(async (req: Request, res: Response) => {
+  const deliveryMen = await UserServices.getAllDeliveryMen();
+  res.status(200).json({
+    success: true,
+    message: 'Delivery men retrieved successfully',
+    data: deliveryMen,
+  });
+});
+
 // get single user 
 const getSingleUser = catchAsync(async (req: Request, res: Response) =>{
   const id = req.params.id;
@@ -92,6 +101,7 @@ const unblockUser = async (req: Request, res: Response) => {
 export const UserControllers = {
   createUser,
   getAllUsers,
+  getAllDeliveryMen,
   getSingleUser,
   userProfile,
   updateUser,
