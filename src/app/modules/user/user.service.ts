@@ -4,8 +4,6 @@ import { User } from "./user.model";
 import { envVars } from "../../config/env";
 import bcryptjs from "bcryptjs";
 import AppError from "../../error/AppError";
-import { QueryBuilder } from "../../utils/QueryBuilder";
-import { userSearchableFields } from "./user.constant";
 import { JwtPayload } from "jsonwebtoken";
 
 // create user
@@ -39,36 +37,47 @@ const createUser = async (payload: Partial<IUser>) => {
 };
 
 // get all users
-const getAllUsers = async (query: Record<string, string>) => {
-  const queryBuilder = new QueryBuilder(User.find(), query);
+// const getAllUsers = async (query: Record<string, string>) => {
+//   const queryBuilder = new QueryBuilder(User.find(), query);
 
-  const userData = queryBuilder
-    .filter()
-    .search(userSearchableFields)
-    .sort()
-    .fields()
-    .paginate();
+//   const userData = queryBuilder
+//     .filter()
+//     .search(userSearchableFields)
+//     .sort()
+//     .fields()
+//     .paginate();
 
-  const [data, meta] = await Promise.all([
-    userData.build(),
-    queryBuilder.getMeta(),
-  ]);
+//   const [data, meta] = await Promise.all([
+//     userData.build(),
+//     queryBuilder.getMeta(),
+//   ]);
 
-  return {
-    data,
-    meta,
-  };
+//   return {
+//     data,
+//     meta,
+//   };
+// };
+
+const getAllUsers = async (query: Record<string, unknown>) => {
+  const page = Number(query.page) || 1;
+  const limit = Number(query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const users = await User.find().skip(skip).limit(limit);
+  const total = await User.countDocuments();
+
+  return { meta: { page, limit, total }, data: users };
 };
 
+
 const getAllDeliveryMen = async (): Promise<IUser[]> => {
-  const deliveryMen = await User.find({ role: 'DeliveryMan', status: 'active' }).select('name email');
+  const deliveryMen = await User.find({ role: 'SENDER', status: 'active' }).select('name email role');
   return deliveryMen;
 };
 
 // get me
 const userProfile = async (userId: string) => {
   const user = await User.findById(userId).select("-password");
-console.log(user)
   return {
     data: user
   }
@@ -133,11 +142,39 @@ const updateUser = async (
   return newUpdateUser;
 };
 
+// block toggle 
+const updateUserStatus = async (userId: string, status: 'active' | 'blocked') => {
+  return await User.findByIdAndUpdate(userId, { status }, { new: true });
+};
+
 // user toggle status
-const toggleBlockStatus = async (userId: string, isBlocked: boolean) => {
+// const toggleBlockStatus = async (userId: string, isBlocked: boolean) => {
+//   const updatedUser = await User.findByIdAndUpdate(
+//     userId,
+//     { isBlocked: isBlocked },
+//     { new: true }
+//   );
+
+//   if (!updatedUser) {
+//     throw new Error("User not found");
+//   }
+
+//   console.log(
+//     `User with ID: ${userId} has been ${isBlocked ? "blocked" : "unblocked"}.`
+//   );
+//   const result = {
+//     id: userId,
+//     name: "Test User",
+//     isBlocked: isBlocked,
+//   };
+//   return result;
+// };
+
+// block status
+const toggleBlockStatus = async (id: string, status: string) => {
   const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { isBlocked: isBlocked },
+    id,
+    { status: 'blocked' },
     { new: true }
   );
 
@@ -146,14 +183,40 @@ const toggleBlockStatus = async (userId: string, isBlocked: boolean) => {
   }
 
   console.log(
-    `User with ID: ${userId} has been ${isBlocked ? "blocked" : "unblocked"}.`
+    `User with ID: ${id} has been ${status ? "blocked" : "active"}.`
   );
   const result = {
-    id: userId,
+    id: id,
     name: "Test User",
-    isBlocked: isBlocked,
+    status: status,
   };
   return result;
+};
+
+const toggleUnblockStatus = async (id: string, status: string) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    id,
+    { status: 'active' },
+    { new: true }
+  );
+
+  if (!updatedUser) {
+    throw new Error("User not found");
+  }
+
+  console.log(
+    `User with ID: ${id} has been ${status ? "blocked" : "active"}.`
+  );
+  const result = {
+    id: id,
+    name: "Test User",
+    status: status,
+  };
+  return result;
+};
+
+const deleteUser = async (userId: string) => {
+  return await User.findByIdAndDelete(userId);
 };
 
 export const UserServices = {
@@ -164,4 +227,7 @@ export const UserServices = {
   updateUser,
   userProfile,
   toggleBlockStatus,
+  toggleUnblockStatus,
+  updateUserStatus,
+  deleteUser
 };

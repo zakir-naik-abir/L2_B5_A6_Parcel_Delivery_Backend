@@ -29,10 +29,11 @@ export interface IUser {
   address?: string
   isVerified?: boolean
   isActive?: IsActive
-  isBlocked?: string
-  isDeleted?: string
+  isBlocked?: boolean
+  isDeleted?: boolean
   role: "SUPER_ADMIN" | "ADMIN" |  "SENDER" |  "RECEIVER" |  "DELIVERYMAN"
   auths: AuthProvider[]
   createdAt?: Date
+  status: 'active' | 'blocked'
   matchPassword(enteredPassword: string): Promise<boolean>;
 };

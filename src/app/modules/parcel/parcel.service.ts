@@ -5,7 +5,6 @@ import { IParcel } from "./parcel.interface";
 import { Parcel } from "./parcel.model";
 import { User } from "../user/user.model";
 import AppError from "../../error/AppError";
-import { IUser } from '../user/user.interface';
 
 
 const createParcel = async (payload: IParcel) => {
@@ -17,11 +16,11 @@ const createParcel = async (payload: IParcel) => {
   return result;
 };
 
-const getMyParcels = async (user: IUser & { _id: any }) => {
+const getMyParcels = async (user: JwtPayload) => {
 
 
   const userRole = user.role?.toLowerCase();
-  const userId = user._id;
+  const userId = user?.userId;
 
   if (!userRole || !userId) {
     console.error('Error: Role or ID not found in user model instance.');

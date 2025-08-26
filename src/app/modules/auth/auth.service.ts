@@ -88,9 +88,7 @@ const forgotPassword = async (email: string) => {
 };
 
 const setPassword = async (id: string, plainPassword: string) => {
-  console.log(id)
   const user = await User.findById(id);
-  console.log(user)
 
   if (!user) {
     throw new AppError(404, "Your account is not found");
@@ -133,19 +131,21 @@ const changePassword = async (
 
   const isOldPasswordMatch = await bcryptjs.compare(
     oldPassword,
-    user.password as string
+    user?.password as string
   );
 
   if (!isOldPasswordMatch) {
     throw new AppError(httpStatus.UNAUTHORIZED, "Your old password is incorrect");
   }
 
-  user.password = await bcryptjs.hash(
+
+
+  (user as any).password = await bcryptjs.hash(
     newPassword,
     Number(envVars.BCRYPT_SALT_ROUND)
   );
 
-  await user.save();
+  await user?.save();
 };
 
 export const AuthServices = {

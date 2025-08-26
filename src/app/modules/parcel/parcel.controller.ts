@@ -15,7 +15,8 @@ const createParcel = catchAsync(
 
     const payload: Partial<IParcel> = {
       ...req.body,
-      sender: req.user?.userId
+      sender: (req.user as { userId: string }).userId
+      // sender: req.user?.userId
       // images: imagePaths,
     };
 
@@ -37,7 +38,7 @@ const createParcel = catchAsync(
 const getMyParcels = catchAsync(async (req: Request, res: Response, ) =>{
   
 
-  const user = req.user;
+  const user = req?.user;
 
   if(!user){
     throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized")

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import bcryptjs from 'bcryptjs';
 import { envVars } from "../config/env"
 import { User } from "../modules/user/user.model"
@@ -14,8 +15,6 @@ export const sendSuperAdmin = async () => {
       return
     };
 
-    console.log("👑 Trying to create Super Admin..");
-
     const hashedPassword = await bcryptjs.hash(envVars.SUPER_ADMIN_PASSWORD, Number(envVars.BCRYPT_SALT_ROUND));
 
     const authProvider: AuthProvider = {
@@ -29,14 +28,15 @@ export const sendSuperAdmin = async () => {
       email: envVars.SUPER_ADMIN_EMAIL,
       password: hashedPassword,
       isVerified: true,
-      auths: [authProvider]
+      auths: [authProvider],
+      status: 'active',
+      matchPassword: function (enteredPassword: string): Promise<boolean> {
+        throw new Error('Function not implemented.');
+      }
     };
 
-    const superAdmin = await User.create(payload);
-    console.log("Super Admin Created Successfully!");
-    console.log(superAdmin)
+   await User.create(payload);
   } catch (error) {
-    console.log(error)
     return error
   }
 };

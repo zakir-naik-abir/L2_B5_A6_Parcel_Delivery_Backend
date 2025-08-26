@@ -44,12 +44,12 @@ export const checkAuth =
       if (isUserExist.isBlocked) {
         throw new AppError(httpStatus.BAD_REQUEST, "Your account is blocked");
       }
-      if (!authRoles.includes(verifiedToken.role)) {
-        throw new AppError(401, "You are not permitted to view this route!!");
-      }
-      // if(!authRoles.includes(isUserExist.role)){
-      //   throw new AppError(401, "You are not permitted this route")
+      // if (!authRoles.includes(verifiedToken.role)) {
+      //   throw new AppError(401, "You are not permitted to view this route!!");
       // }
+      if(!authRoles.includes(isUserExist.role)){
+        throw new AppError(401, "You are not permitted this route")
+      }
       req.user = isUserExist;
       req.user = verifiedToken;
       next();

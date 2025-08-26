@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { v2 as cloudinary, UploadApiResponse, } from "cloudinary";
 import { envVars } from "./env";
 import Stream from "stream";
@@ -31,7 +32,6 @@ export const uploadBufferToCloudinary = async (buffer: Buffer, fileName: string)
       ).end(buffer)
     })
   } catch (error: any) {
-    console.log(error);
     throw new AppError(401, `Error uploading file ${error.message}`)
   }
 };

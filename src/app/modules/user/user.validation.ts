@@ -11,8 +11,9 @@ export const createUserZodSchema = z.object({
   role: z.string().optional(),
   email: z
     .string()
+    .email()
     .endsWith("@gmail.com", {message: "Enter your valid email"})
-    .min(5, { message: "Email must be at least 5 characters long." })
+    .min(14, { message: "Email address too short" })
     .max(100, { message: "Email cannot exceed 100 characters" })
     .refine((email) => email === email.toLowerCase(), {message: "Email must be lowercase"})
     .regex( /^(?!\.)(?!.*\.\.)([A-Z0-9_'+-.]*)[A-Z0-9_'+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i, {
