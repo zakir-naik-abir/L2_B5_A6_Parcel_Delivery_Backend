@@ -1,26 +1,30 @@
 
 import { Types } from "mongoose";
+import { IUser } from "../user/user.interface";
 
-export type IParcelStatus = "Requested" | "Approved" | "Dispatched" | "In-Transit" | "Delivered" | "Cancelled" | "Confirmed";
+export type IParcelStatus = "requested" | "approved" | "dispatched" | "in-transit" | "delivered" | "cancelled" | "confirmed" | "assigned" | "picked_up" | "pending"
 
 export interface IStatusLog{
-  status: IParcelStatus;
+  status: string;
   timestamp: Date;
-  updateBy: Types.ObjectId;
+  updateBy: Types.ObjectId | IUser;
   notes?: string;
 };
 
 export interface IParcel {
-   sender: Types.ObjectId;
+  _id: Types.ObjectId;
+   sender: Types.ObjectId | IUser;
+   senderName: string;
    receiverName: string;
    receiverPhone: string;
    deliveryAddress: string;
    requestedDeliveryDate: Date;
-   parcelWeight: number;
+  //  parcelWeight?: number;
    parcelType: string;
-   deliveryFee: number;
+   deliveryFee?: number;
    trackingId: string;
-   status: IParcelStatus;
+   deliveryMan?: Types.ObjectId | IUser; 
+  status: string;
+  //  status: IParcelStatus;
    statusHistory: IStatusLog[];
-   deliveryMan?: Types.ObjectId;
 };

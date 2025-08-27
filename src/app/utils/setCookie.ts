@@ -11,7 +11,8 @@ export const setAuthCookie = (res: Response, tokenInfo: AuthTokens) =>{
       httpOnly: true,
       secure: true,
       // secure: envVars.NODE_ENV === "production",
-      sameSite: "none"
+      sameSite: "none",
+      // maxAge: COOKIE_EXPRIRE_TIME
     })
   };
   

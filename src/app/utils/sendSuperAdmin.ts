@@ -29,7 +29,7 @@ export const sendSuperAdmin = async () => {
       password: hashedPassword,
       isVerified: true,
       auths: [authProvider],
-      status: 'active',
+      status: 'ACTIVE',
       matchPassword: function (enteredPassword: string): Promise<boolean> {
         throw new Error('Function not implemented.');
       }

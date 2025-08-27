@@ -21,8 +21,8 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["SUPER_ADMIN", "ADMIN", "SENDER", "RECEIVER", "DELIVERYMAN"],
-      default: 'SENDER',
+      enum: ["SUPER_ADMIN", "ADMIN", "SENDER", "RECEIVER", "DELIVERYMAN", "CUSTOMER"],
+      default: 'CUSTOMER',
       required: true
     },
     phone: { type: String },
@@ -37,7 +37,7 @@ const userSchema = new Schema<IUser>(
     isBlocked: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
     auths: [authProviderSchema],
-    status: { type: String, enum: ['active', 'blocked'], default: 'active' },
+    status: { type: String, enum: ['ACTIVE', 'BLOCKED'], default: 'ACTIVE' },
   },
   {
     versionKey: false,

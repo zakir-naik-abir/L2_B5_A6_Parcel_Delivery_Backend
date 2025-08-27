@@ -5,6 +5,7 @@ import { UserRoutes } from "../modules/user/user.route";
 import { ParcelRoutes } from "../modules/parcel/parcel.route";
 import { OtpRoutes } from "../modules/otp/otp.route";
 
+
 export const router = Router();
 
 const moduleRoutes = [

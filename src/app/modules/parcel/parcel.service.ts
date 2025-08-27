@@ -9,7 +9,13 @@ import AppError from "../../error/AppError";
 
 const createParcel = async (payload: IParcel) => {
  
-  payload.deliveryFee = (payload.parcelWeight || 0 ) * 50;
+  // payload.deliveryFee = (payload.parcelWeight || 0 ) * 50;
+
+  // payload.deliveryFee = (payload.parcelWeight || 0 ) * 50;
+//   const parcelWeight = payload(parseFloat(parcelWeight))
+//   const pf = parseFloat(parcelWeight)
+// console.log(parcelWeight)
+  // const pf = parcelWeight(parseInt)
 
 
   const result = await Parcel.create(payload);
@@ -28,9 +34,7 @@ const getMyParcels = async (user: JwtPayload) => {
   }
 
   if (userRole === 'sender') {
-    console.log(`Searching for parcels with sender ID: ${userId}`);
     const parcels = await Parcel.find({ sender: userId })
-    console.log(`Parcels found for sender: ${parcels.length}`);
     return parcels;
   }
 
@@ -43,7 +47,6 @@ const getMyParcels = async (user: JwtPayload) => {
       return [];
     }
 
-    console.log(`Searching for parcels with receiver phone: ${receiverPhone}`);
     const parcels = await Parcel.find({ receiverPhone: receiverPhone }).populate(
       'sender',
       'name email',
@@ -85,11 +88,11 @@ const cancelParcel = async (user: JwtPayload, parcelId: string) =>{
   if(parcel.sender.toString() !== user.userId){
     throw new AppError(httpStatus.FORBIDDEN, 'You are not authorized to cancel this parcel')
   }
-  if(parcel.status === 'Dispatched' || parcel.status === 'Delivered'){
+  if(parcel.status === 'dispatched' || parcel.status === 'Delivered'){
     throw new AppError(httpStatus.BAD_REQUEST, `Cannot cancel a parcel that is already ${parcel.status})`)
   }
 
-  parcel.status = 'Cancelled';
+  parcel.status = 'cancelled';
   parcel.statusHistory.push({
     status: 'Cancelled',
     timestamp: new Date(),

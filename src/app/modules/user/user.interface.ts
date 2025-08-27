@@ -5,7 +5,8 @@ export enum UserRole {
   ADMIN = "ADMIN",
   SENDER = "SENDER",
   RECEIVER = "RECEIVER",
-  DELIVERYMAN = "DELIVERYMAN"
+  DELIVERYMAN = "DELIVERYMAN",
+  CUSTOMER = "CUSTOMER"
 };
 
 export enum IsActive {
@@ -31,9 +32,10 @@ export interface IUser {
   isActive?: IsActive
   isBlocked?: boolean
   isDeleted?: boolean
-  role: "SUPER_ADMIN" | "ADMIN" |  "SENDER" |  "RECEIVER" |  "DELIVERYMAN"
+  role: "SUPER_ADMIN" | "ADMIN" |  "SENDER" |  "RECEIVER" | 
+  "CUSTOMER" | "DELIVERYMAN"
   auths: AuthProvider[]
   createdAt?: Date
-  status: 'active' | 'blocked'
+  status: 'ACTIVE' | 'BLOCKED';
   matchPassword(enteredPassword: string): Promise<boolean>;
 };

@@ -15,12 +15,9 @@ const createParcel = catchAsync(
 
     const payload: Partial<IParcel> = {
       ...req.body,
-      sender: (req.user as { userId: string }).userId
-      // sender: req.user?.userId
+      sender: (req.user as { userId: string }).userId,
       // images: imagePaths,
     };
-
-    // const senderId = req.user?.userId;
 
     const result = await ParcelService.createParcel(payload as IParcel);
 

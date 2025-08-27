@@ -21,7 +21,7 @@ router.post(
 
 router.get('/my-parcels', checkAuth(...Object.values(UserRole)), ParcelController.getMyParcels);
 
-router.get('/', checkAuth(UserRole.SUPER_ADMIN, UserRole.ADMIN), ParcelController.getAllParcelsForAdmin)
+router.get('/all-parcel', checkAuth(UserRole.SUPER_ADMIN, UserRole.ADMIN), ParcelController.getAllParcelsForAdmin)
 
 router.patch('/cancel/:id', checkAuth(...Object.values(UserRole)), ParcelController.cancelParcel);
 

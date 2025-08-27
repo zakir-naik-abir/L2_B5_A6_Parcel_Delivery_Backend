@@ -174,7 +174,7 @@ const updateUserStatus = async (userId: string, status: 'active' | 'blocked') =>
 const toggleBlockStatus = async (id: string, status: string) => {
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { status: 'blocked' },
+    { status: 'BLOCKED' },
     { new: true }
   );
 
@@ -183,7 +183,7 @@ const toggleBlockStatus = async (id: string, status: string) => {
   }
 
   console.log(
-    `User with ID: ${id} has been ${status ? "blocked" : "active"}.`
+    `User with ID: ${id} has been ${status ? "BLOCKED" : "ACTIVE"}.`
   );
   const result = {
     id: id,
@@ -196,7 +196,7 @@ const toggleBlockStatus = async (id: string, status: string) => {
 const toggleUnblockStatus = async (id: string, status: string) => {
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { status: 'active' },
+    { status: 'ACTIVE' },
     { new: true }
   );
 
@@ -205,7 +205,7 @@ const toggleUnblockStatus = async (id: string, status: string) => {
   }
 
   console.log(
-    `User with ID: ${id} has been ${status ? "blocked" : "active"}.`
+    `User with ID: ${id} has been ${status ? "BLOCKED" : "ACTIVE"}.`
   );
   const result = {
     id: id,
